@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        input {
+            margin-bottom: 10px;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .message {
+            margin-top: 10px;
+            color: red;
+        }
+        .register {
+            margin-top: 10px;
+            text-align: center;
+        }
+        .register button {
+            background: transparent;
+            color: #007bff;
+            border: 2px solid #007bff;
+            width: auto;
+            cursor: pointer;
+        }
+        .register button:hover {
+            background: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="question" id="question">Loading question...</div>
+
+    <div id="answers"></div>
+</div>
+
+<script>
+    window.onload = function() {
+        fetch('/question', {
+            method: 'GET', // Ensure this is GET
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Populate question
+                document.getElementById('question').innerText = data.question;
+
+                // Populate answers
+                const answersContainer = document.getElementById('answers');
+                answersContainer.innerHTML = ''; // Clear existing buttons
+
+                data.answers.forEach(answer => {
+                    const button = document.createElement('button');
+                    button.className = 'answer-button';
+                    button.innerText = answer;
+                    button.onclick = function() {
+                        checkAnswer(answer);
+                    };
+                    answersContainer.appendChild(button);
+                });
+            })
+            .catch(error => console.error('Error fetching question:', error));
+    };
+
+    function checkAnswer(answer) {
+        const correctAnswer = "Paris"; // This would come dynamically from backend in real use
+        if (answer === correctAnswer) {
+            alert("Correct!");
+        } else {
+            alert("Incorrect, try again!");
+        }
+    }
+</script>
+</body>
+
+</html>
