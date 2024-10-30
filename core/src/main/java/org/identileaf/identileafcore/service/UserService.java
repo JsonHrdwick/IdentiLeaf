@@ -1,7 +1,7 @@
-package org.identileaf.identileaf.service;
+package org.identileaf.identileafcore.service;
 
-import org.identileaf.identileaf.repository.UserRepository;
-import org.identileaf.identileaf.model.User;
+import org.identileaf.identileafcore.repository.UserRepository;
+import org.identileaf.identileafcore.model.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

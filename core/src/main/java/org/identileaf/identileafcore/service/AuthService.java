@@ -1,8 +1,8 @@
-package org.identileaf.identileaf.service;
+package org.identileaf.identileafcore.service;
 
-import org.identileaf.identileaf.model.User;
-import org.identileaf.identileaf.model.UserDTO;
-import org.identileaf.identileaf.repository.UserRepository;
+import org.identileaf.identileafcore.model.User;
+import org.identileaf.identileafcore.model.UserDTO;
+import org.identileaf.identileafcore.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

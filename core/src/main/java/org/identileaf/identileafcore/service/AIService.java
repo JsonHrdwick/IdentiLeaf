@@ -1,4 +1,4 @@
-package org.identileaf.identileaf.service;
+package org.identileaf.identileafcore.service;
 
 import java.io.BufferedReader;
 import java.io.IOException;

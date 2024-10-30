@@ -39,4 +39,5 @@ bin/
 .vscode/
 
 ### Mac OS ###
-.DS_Store
+.DS_Store!/core/src/main/resources/application.properties
+/core/src/main/resources/application.properties

@@ -1,6 +1,6 @@
-package org.identileaf.identileaf.repository;
+package org.identileaf.identileafcore.repository;
 
-import org.identileaf.identileaf.model.User;
+import org.identileaf.identileafcore.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

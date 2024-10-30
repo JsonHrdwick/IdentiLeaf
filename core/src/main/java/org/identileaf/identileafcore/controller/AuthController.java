@@ -1,8 +1,8 @@
-package org.identileaf.identileaf.controller;
+package org.identileaf.identileafcore.controller;
 
-import org.identileaf.identileaf.model.UserDTO;
-import org.identileaf.identileaf.repository.UserRepository;
-import org.identileaf.identileaf.service.AuthService;
+import org.identileaf.identileafcore.model.UserDTO;
+import org.identileaf.identileafcore.repository.UserRepository;
+import org.identileaf.identileafcore.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

@@ -1,7 +1,7 @@
-package org.identileaf.identileaf.config;
+package org.identileaf.identileafcore.config;
 
-import org.identileaf.identileaf.repository.UserRepository;
-import org.identileaf.identileaf.service.UserService;
+import org.identileaf.identileafcore.repository.UserRepository;
+import org.identileaf.identileafcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

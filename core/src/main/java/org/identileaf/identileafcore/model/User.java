@@ -1,4 +1,4 @@
-package org.identileaf.identileaf.model;
+package org.identileaf.identileafcore.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,4 +1,4 @@
-package org.identileaf.identileaf.controller;
+package org.identileaf.identileafcore.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;

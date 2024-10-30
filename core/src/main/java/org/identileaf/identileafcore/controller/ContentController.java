@@ -1,6 +1,6 @@
-package org.identileaf.identileaf.controller;
+package org.identileaf.identileafcore.controller;
 
-import org.identileaf.identileaf.model.UserDTO;
+import org.identileaf.identileafcore.model.UserDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
