@@ -41,3 +41,5 @@ bin/
 ### Mac OS ###
 .DS_Store!/core/src/main/resources/application.properties
 /core/src/main/resources/application.properties
+/app/node_modules/
+!/app/node_modules/
