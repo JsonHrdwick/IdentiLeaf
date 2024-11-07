@@ -26,8 +26,10 @@ public class QueryController {
 
     @PostMapping("/answer")
     public ResponseEntity<String> getAnswer(@RequestBody String answer) {
-        System.out.println(answer);
-        String sql = queryService.resolveAnswer(answer);
+        String[] newAnswer = answer.split("\"");
+        String trueAnswer = newAnswer[3];
+        System.out.println(trueAnswer);
+        String sql = queryService.resolveAnswer(trueAnswer);
         System.out.println(sql);
 
         return ResponseEntity.ok(sql);

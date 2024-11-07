@@ -18,6 +18,7 @@ public class QueryService {
     private final HashMap<Integer,HashMap<String,ArrayList<String>>> questionMap;
     private String question;
     public Integer questionNumber;
+    private ArrayList<String> answers;
 
     QueryService() throws FileNotFoundException {
         questionMap = generateQuestions();
@@ -71,8 +72,6 @@ public class QueryService {
      * @return SQL string to append to query that relates to the given answer
      */
     public String resolveAnswer(String answer){
-        HashMap<String,ArrayList<String>> innerMap = questionMap.get(questionNumber);
-        ArrayList<String> answers = innerMap.get(question);
         int SQLIndex = answers.indexOf(answer) + 1;
         questionNumber++;
         return answers.get(SQLIndex);
@@ -83,8 +82,9 @@ public class QueryService {
      * @return ArrayList of possible expected answers
      */
     public ArrayList<String> getAnswers(){
-        ArrayList<String> answersOnly = questionMap.get(questionNumber).get(question);
-        answersOnly.removeIf(i -> i.contains("=")); // Remove entries that contain = as those are most likely SQL queries
+        answers = questionMap.get(questionNumber).get(question);
+        ArrayList<String> answersOnly = answers;
+        answersOnly.removeIf(i -> i.contains("="));// Remove entries that contain = as those are most likely SQL queries
         return answersOnly;
 
     }
