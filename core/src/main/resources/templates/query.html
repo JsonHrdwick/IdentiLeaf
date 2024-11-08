@@ -102,11 +102,11 @@
         fetch('/answer', {
             method: 'POST',
             headers : {
-                'Content-Type': 'application/json'
+                'Content-Type': 'text/plain'
             },
-            body: JSON.stringify({answer: answer})
+            body: answer
         })
-            .then(response => response.json())
+            .then(response => response.text())
             .then(data => {
                 if (data){
 
