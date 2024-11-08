@@ -25,8 +25,11 @@ Explore Further: Dive into detailed species info with an AI-powered knowledge ba
 ## 🛠️ Technologies Used
 
 React Native for the mobile app interface
-Java with SpringBoot for the backend API
+
+Java with SpringBoot for the backend 
+
 OpenAI for AI model integration
+
 MySQL using AWS for tree and user data storage
 
 ## 🌟 Acknowledgements
@@ -38,4 +41,25 @@ Special thanks to all contributors!
 ## Installation
 
 Frontend component: From ``IdentiLeaf-Master/app`` directory, run ``npm install`` in the terminal to install the most recent packages for node and expo. Run the module with ``npm start``.
-Backend component: Navigate to ``IdentiLeaf-Master/core/src/main/java/org/identileaf/identileafcore/IdentiLeafCoreApplication``. Run the application here
+Backend component: Navigate to ``IdentiLeaf-Master/core/src/main/java/org/identileaf/identileafcore/IdentiLeafCoreApplication``. Run the application here.
+For security reasons, application.properties is missing from the GitHub repository. This file contains database credentials and the AI API key.
+This file lives in `core/src/main/resources/application.properties` The sensitive data has been omitted.
+```
+spring.application.name=IdentiLeaf-Core
+spring.datasource.url=***
+spring.datasource.username=***
+spring.datasource.password=***
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+spring.thymeleaf.prefix=classpath:/templates/
+spring.thymeleaf.suffix=.html
+spring.web.resources.add-mappings=false
+server.error.whitelabel.enabled=false
+
+server.servlet.session.timeout=5m
+spring.web.resources.static-locations=classpath:/static/
+
+spring.ai.openai.api-key=***
+```
