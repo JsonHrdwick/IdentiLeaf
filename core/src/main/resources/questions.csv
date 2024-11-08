@@ -1,11 +1,11 @@
-Is this plant a tree?,yes, PlantType_ID = 1,no, PlantType_ID = 2
-Is the leaf scale needle or broad?,scale, AND LeafType_ID = 1,needle, AND LeafType_ID = 2,broad, AND LeafType_ID = 3
-Does the leaf edge have teeth or is the edge smooth?,teeth edge, AND (Tree.ID = 3 OR Tree.ID = 4),smooth edge, AND (Tree.ID = 5 OR Tree.ID = 6)
-Does the plant have paired samaras and red petiole?,yes, AND Tree.ID = 3,no, AND 1=1
-Is the leaf star-shaped with a spined and round capsule?,yes, AND Tree.ID = 4,no, AND 1=1
-Is the leaf deeply lobed with irregularly plated bark?,yes, AND ID = 5,no, AND 1=1
-Is the leaf kite-shaped and shallowly lobed?,yes, AND Tree.ID = 6,no, AND 1=1
-Does the plant have a simple or compound leaf?,simple, AND (Tree.ID = 7 OR Tree.ID = 8 OR Tree.ID = 10),compound, AND Tree.ID = 9
-Is the leaf oval shaped and rough on both sides?,yes, AND Tree.ID = 7,no, AND 1=1
-Is the leaf triangularly shaped with sharp spines on the twigs?,yes, AND Tree.ID = 8,no, AND 1=1
-Does the leaf have a smooth edge?,yes, AND Tree.ID = 10,no, AND 1=1
+Is this plant a tree?,yes,PlantType_ID=1,no,PlantType_ID=2
+Is the leaf scale needle or broad?,scale,LeafType_ID=1,needle,LeafType_ID=2,broad,LeafType_ID=3
+Does the leaf edge have teeth or is the edge smooth?,teeth edge,Tree.ID=3/Tree.ID=4,smooth edge,Tree.ID=5/Tree.ID=6
+Does the plant have paired samaras and red petiole?,yes,Tree.ID=3,no,1=1
+Is the leaf star-shaped with a spined and round capsule?,yes,Tree.ID=4,no,1=1
+Is the leaf deeply lobed with irregularly plated bark?,yes,ID=5,no,1=1
+Is the leaf kite-shaped and shallowly lobed?,yes,Tree.ID=6,no,1=1
+Does the plant have a simple or compound leaf?,simple,Tree.ID=7/Tree.ID=8/Tree.ID=10,compound,Tree.ID=9
+Is the leaf oval shaped and rough on both sides?,yes,Tree.ID=7,no,1=1
+Is the leaf triangularly shaped with sharp spines on the twigs?,yes,Tree.ID=8,no,1=1
+Does the leaf have a smooth edge?,yes,Tree.ID=10,no,1=1
