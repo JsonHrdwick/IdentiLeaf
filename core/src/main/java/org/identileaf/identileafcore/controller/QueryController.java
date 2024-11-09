@@ -42,7 +42,9 @@ public class QueryController {
 
     @PostMapping("/answer")
     public ResponseEntity<String> getAnswer(@RequestBody String answer) {
-        String sql = queryService.resolveAnswer(answer);
+        String[] newAnswer = answer.split("\"");
+        String trueAnswer = newAnswer[3];
+        String sql = queryService.resolveAnswer(trueAnswer);
         System.out.println(sql);
         if (sql.contains("PlantType_ID=")){
             treeList = treeService.getSpecificTrees(Integer.parseInt(sql.replace("PlantType_ID=", "")));
