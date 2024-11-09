@@ -3,6 +3,7 @@ package org.identileaf.identileafcore.controller;
 import org.identileaf.identileafcore.model.UserDTO;
 import org.identileaf.identileafcore.repository.UserRepository;
 import org.identileaf.identileafcore.service.AuthService;
+import org.identileaf.identileafcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,10 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private static final int MAX_FAILED_ATTEMPTS = 3;
+    private static final long LOCK_TIME_DURATION = 15; // in minutes
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public AuthController(AuthService authService) {
