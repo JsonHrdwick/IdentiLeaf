@@ -18,6 +18,7 @@ public class QueryService {
     private final HashMap<Integer,HashMap<String,ArrayList<String>>> questionMap;
     private String question;
     public Integer questionNumber;
+    private ArrayList<String> answers;
 
     QueryService() throws FileNotFoundException {
         questionMap = generateQuestions();
@@ -65,24 +66,11 @@ public class QueryService {
     }
 
     /**
-     * Takes user's answer from current question and generates the SQL concat string to append to the query
-     * @param answer Chosen answer from an answer set for the current question.
-     *               Param is case-sensitive and has no error handling functionality
-     * @return SQL string to append to query that relates to the given answer
-     */
-    public String resolveAnswer(String answer){
-        ArrayList<String> answers = questionMap.get(questionNumber).get(question);
-        int SQLIndex = answers.indexOf(answer) + 1;
-        questionNumber++;
-        return answers.get(SQLIndex);
-    }
-
-    /**
      * Generates the answers that go with the current question
      * @return ArrayList of possible expected answers
      */
     public ArrayList<String> getAnswers(){
-        ArrayList<String> answers = questionMap.get(questionNumber).get(question);
+        answers = questionMap.get(questionNumber).get(question);
         ArrayList<String> answersOnly = new ArrayList<>();
         for (int i = 0; i < answers.size(); i++){
             if (!answers.get(i).contains("=")){
@@ -91,6 +79,18 @@ public class QueryService {
         }
         return answersOnly;
 
+    }
+
+    /**
+     * Takes user's answer from current question and generates the SQL concat string to append to the query
+     * @param answer Chosen answer from an answer set for the current question.
+     *               Param is case-sensitive and has no error handling functionality
+     * @return SQL string to append to query that relates to the given answer
+     */
+    public String resolveAnswer(String answer){
+        int SQLIndex = answers.indexOf(answer) + 1;
+        questionNumber++;
+        return answers.get(SQLIndex);
     }
 
     /**
