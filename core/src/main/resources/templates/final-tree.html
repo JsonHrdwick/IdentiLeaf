@@ -60,17 +60,17 @@
 </head>
 <body>
 <div class="container">
-    <div class="question" id="question">Loading question...</div>
+    <div class="treename" id="treename">Loading tree...</div>
 
-    <div id="answers"></div>
+    <div id="treeinfo"></div>
 </div>
 
 <script>
     window.onload = function() {
-        generateQuestions()
+        fetchTree()
     };
-    function generateQuestions(){
-        fetch('/question', {
+    function fetchTree(){
+        fetch('/treeInfo', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -79,43 +79,14 @@
             .then(response => response.json())
             .then(data => {
                 // Populate question
-                document.getElementById('question').innerText = data.question;
+                document.getElementById('treename').innerText = data.treename;
+                document.getElementById('treeinfo').innerText = data.treeinfo
 
-                // Populate answers
-                const answersContainer = document.getElementById('answers');
-                answersContainer.innerHTML = ''; // Clear existing buttons
 
-                data.answers.forEach(answer => {
-                    const button = document.createElement('button');
-                    button.className = 'answer-button';
-                    button.innerText = answer;
-                    button.onclick = function() {
-                        processAnswer(answer);
-                    };
-                    answersContainer.appendChild(button);
-                });
+                    .catch(error => console.error('Error fetching question:', error));
             })
-            .catch(error => console.error('Error fetching question:', error));
     }
 
-    function processAnswer(answer) {
-        fetch('/answer', {
-            method: 'POST',
-            headers : {
-                'Content-Type': 'text/plain'
-            },
-            body: answer
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.redirectUrl){
-                    window.location.href = data.redirectUrl;
-                } else {
-                    generateQuestions();
-                }
-            })
-
-    }
 </script>
 </body>
 

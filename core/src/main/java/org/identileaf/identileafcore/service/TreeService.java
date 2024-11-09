@@ -41,9 +41,10 @@ public class TreeService {
     public List<Tree> getTreeByBarkTypeID(int BarkTypeID) { return treeRepository.findByBarkTypeID(BarkTypeID); }
 
     public List<Tree> findTrees(Integer plantTypeId, Integer leafTypeId, Integer barkTypeId) {
-        Specification<Tree> spec = Specification.where(TreeSpecifications.hasPlantType(plantTypeId))
-                .and(TreeSpecifications.hasLeafType(leafTypeId))
-                .and(TreeSpecifications.hasBarkType(barkTypeId));
+        Specification<Tree> spec = Specification.where(TreeSpecifications.hasPlantType(plantTypeId==0 ? null : plantTypeId))
+                .and(TreeSpecifications.hasLeafType(leafTypeId==0 ? null : leafTypeId))
+                .and(TreeSpecifications.hasBarkType(barkTypeId==0 ? null : barkTypeId));
+
 
         return treeRepository.findAll(spec);
     }

@@ -4,6 +4,7 @@ import org.identileaf.identileafcore.model.Tree;
 import org.identileaf.identileafcore.service.QueryService;
 import org.identileaf.identileafcore.service.TreeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.net.URI;
 import java.util.*;
 
 @Controller
@@ -25,6 +27,8 @@ public class QueryController {
     private int leafType;
     private int plantType;
 
+    private boolean finalQuestion = false;
+
     @Autowired
     public QueryController(TreeService treeService , QueryService queryService) {
         this.treeService = treeService;
@@ -35,15 +39,23 @@ public class QueryController {
     @GetMapping("/question")
     public ResponseEntity<Map<String, Object>> getQuestion() {
         Map<String, Object> response = new HashMap<>();
-        response.put("question", queryService.promptQuestion());
-        response.put("answers", queryService.getAnswers());
+        if (!finalQuestion) {
+            response.put("question", queryService.promptQuestion());
+            response.put("answers", queryService.getAnswers());
+        } else {
+            response.put("question", "Is " + treeList.toString().split("=")[3].split(",")[0] + " your tree?");
+            ArrayList<String> answers = new ArrayList<>();
+            answers.add("Yes"); answers.add("No");
+            response.put("answers", answers);
+        }
         return ResponseEntity.ok(response);
+
     }
 
     @PostMapping("/answer")
-    public ResponseEntity<String> getAnswer(@RequestBody String answer) {
+    public ResponseEntity<?> getAnswer(@RequestBody String answer) {
 
-        while (treeList.isPresent() && treeList.get().size() > 1) {
+        if (treeList.isPresent() && treeList.get().size() > 1) {
             String sql = queryService.resolveAnswer(answer);
 
             // Only format of Tree.ID= should have / to delimit multiple possible ids
@@ -65,15 +77,27 @@ public class QueryController {
                 leafType = Integer.parseInt(sql.split("LeafType_ID=")[1]);
                 treeList = Optional.ofNullable(treeService.findTrees(plantType, leafType, barkType));
             }
+            if (treeList.get().size() == 1) {finalQuestion = true;}
+            else if (treeList.get().size() == 0) {restartQuery();}
             System.out.println(treeList);
-            return ResponseEntity.ok(sql);
+        } else if (finalQuestion) {
+            if ("Yes".equals(answer)) {
+                return ResponseEntity.ok().body(Map.of("redirectUrl", "/final-tree"));
+            } else{
+                restartQuery();
+            }
+        } else if (treeList.isEmpty()) {
+            restartQuery();
         }
-        if (treeList.isEmpty()) {
-            treeList = Optional.ofNullable(treeService.getAllTrees());
-            return ResponseEntity.ok("Restarting"); // Make the page redirect here
-        } else {
-            return ResponseEntity.ok("/finalQuestion"); // On to new page
-        }
+        return ResponseEntity.ok(Map.of("status", "continue")); // Use a JSON object for consistent structure
+    }
+    private void restartQuery() {
+        treeList = Optional.ofNullable(treeService.getAllTrees());
+        leafType = 0;
+        plantType = 0;
+        barkType = 0;
+        queryService.questionNumber=0;
+        finalQuestion = false;
     }
 
 }

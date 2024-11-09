@@ -32,4 +32,7 @@ public class ContentController {
     public String query() {
         return "query";
     }
+
+    @GetMapping("/final-tree")
+    public String finalTree() {return "final-tree";}
 }
