@@ -3,17 +3,15 @@ package org.identileaf.identileafcore.controller;
 import org.identileaf.identileafcore.model.Tree;
 import org.identileaf.identileafcore.service.QueryService;
 import org.identileaf.identileafcore.service.TreeService;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.net.URI;
 import java.util.*;
 
 @Controller
@@ -22,6 +20,7 @@ public class QueryController {
     private final QueryService queryService;
     private TreeService treeService;
     private Optional<List<Tree>> treeList;
+    private final OpenAiChatModel chatModel;
 
     private int barkType;
     private int leafType;
@@ -30,9 +29,10 @@ public class QueryController {
     private boolean finalQuestion = false;
 
     @Autowired
-    public QueryController(TreeService treeService , QueryService queryService) {
+    public QueryController(TreeService treeService , QueryService queryService, OpenAiChatModel chatModel) {
         this.treeService = treeService;
         this.queryService = queryService;
+        this.chatModel = chatModel;
         treeList = Optional.ofNullable(treeService.getAllTrees());
     }
 
@@ -98,6 +98,15 @@ public class QueryController {
         barkType = 0;
         queryService.questionNumber=0;
         finalQuestion = false;
+    }
+
+    @GetMapping("/ai/treeDetail")
+    public Map<String, String> treeDetail() {
+        String finalTree = treeList.toString().split("=")[3].split(",")[0];
+        String prompt = "Provide detailed information about the tree species " + finalTree + ".";
+        System.out.println(prompt);
+        return Map.of("tree", finalTree,
+                "detail", chatModel.call(prompt));
     }
 
 }
