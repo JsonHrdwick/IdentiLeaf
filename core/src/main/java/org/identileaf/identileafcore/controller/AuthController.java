@@ -1,10 +1,12 @@
 package org.identileaf.identileafcore.controller;
 
+import org.identileaf.identileafcore.model.User;
 import org.identileaf.identileafcore.model.UserDTO;
 import org.identileaf.identileafcore.repository.UserRepository;
 import org.identileaf.identileafcore.service.AuthService;
 import org.identileaf.identileafcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.security.authentication.AuthenticationManager;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 @Controller
@@ -52,10 +55,33 @@ public class AuthController {
                 );
 
                 if (auth.isAuthenticated()) {
+                    User user = (User) userService.loadUserByUsername(userDTO.getUsername());
+                    user.setFailedLoginAttempts(0); // Reset on successful login
                     return "/index";
+                } else if (!auth.isAuthenticated()){
+                    System.out.println("Attempt failed");
+                    User user = (User) userService.loadUserByUsername(userDTO.getUsername());
+                    System.out.println(user.getFailedLoginAttempts());
+
                 }
             } catch (AuthenticationException e) {
                 model.addAttribute("error", "Invalid username or password");
+                User user = (User) userService.loadUserByUsername(userDTO.getUsername());
+                if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS &&
+                    user.getLastFailedLogin().plusMinutes(LOCK_TIME_DURATION).isAfter(LocalDateTime.now())){
+                    model.addAttribute("error", "Account Locked");
+                    return null;
+
+                } else {
+                    user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
+                    System.out.println("Attempt failed");
+                    System.out.println(user.getFailedLoginAttempts());
+                    user.setLastFailedLogin(LocalDateTime.now());
+                    if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS) {
+                        model.addAttribute("error", "Maximum failed attempts reached");
+                        return null;
+                    }
+                }
             }
 
         }
