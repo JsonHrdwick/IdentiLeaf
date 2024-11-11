@@ -6,13 +6,15 @@ import org.identileaf.identileafcore.service.TreeService;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 
 @Controller
 public class QueryController {
@@ -78,7 +80,7 @@ public class QueryController {
                 treeList = Optional.ofNullable(treeService.findTrees(plantType, leafType, barkType));
             }
             if (treeList.get().size() == 1) {finalQuestion = true;}
-            else if (treeList.get().size() == 0) {restartQuery();}
+            else if (treeList.get().isEmpty()) {restartQuery();}
             System.out.println(treeList);
         } else if (finalQuestion) {
             if ("Yes".equals(answer)) {
@@ -100,13 +102,20 @@ public class QueryController {
         finalQuestion = false;
     }
 
-    @GetMapping("/ai/treeDetail")
-    public Map<String, String> treeDetail() {
-        String finalTree = treeList.toString().split("=")[3].split(",")[0];
-        String prompt = "Provide detailed information about the tree species " + finalTree + ".";
-        System.out.println(prompt);
-        return Map.of("tree", finalTree,
-                "detail", chatModel.call(prompt));
+    @GetMapping("/treeDetail")
+    public ResponseEntity<Map<String, String>> treeDetail() {
+        if (treeList.get().size() == 1){
+            String finalTree = treeList.toString().split("=")[3].split(",")[0];
+            String prompt = "Provide 200 word or less detailed information about the " + finalTree + " tree.";
+            return ResponseEntity.ok(Map.of( "treename", finalTree,
+                    "treedetail", chatModel.call(prompt)));
+        } else {
+            // Catch if page is reached without a proper query. Could also do a redirect but whatever
+            return ResponseEntity.ok(Map.of("error", "You've reached this page in error. " +
+                    "Please return to the tree query and make sure you have answered the questions properly",
+                    "treename", "",
+                    "treedetail", ""));
+        }
     }
 
 }
