@@ -7,6 +7,7 @@ import org.identileaf.identileafcore.service.AuthService;
 import org.identileaf.identileafcore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -19,6 +20,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class AuthController {
@@ -40,14 +43,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String login(UserDTO userDTO, Model model){
+    public ResponseEntity<Map<String,String>> login(UserDTO userDTO, Model model){
 
         if (!authService.validateNewEmail(userDTO.getUsername())) {
-            model.addAttribute("error", "Invalid email address");
-            return null;
+            //model.addAttribute("error", "Invalid email address");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid email address"));
         } else if (!authService.validateNewPassword(userDTO.getPassword())) {
-            model.addAttribute("error", "Invalid password");
-            return null;
+            //model.addAttribute("error", "Invalid password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Invalid password"));
         } else {
             try {
                 Authentication auth = authenticationManager.authenticate(
@@ -57,7 +60,7 @@ public class AuthController {
                 if (auth.isAuthenticated()) {
                     User user = (User) userService.loadUserByUsername(userDTO.getUsername());
                     user.setFailedLoginAttempts(0); // Reset on successful login
-                    return "/index";
+                    return ResponseEntity.ok(Map.of("redirectUrl","/login"));
                 } else if (!auth.isAuthenticated()){
                     System.out.println("Attempt failed");
                     User user = (User) userService.loadUserByUsername(userDTO.getUsername());
@@ -67,25 +70,25 @@ public class AuthController {
             } catch (AuthenticationException e) {
                 model.addAttribute("error", "Invalid username or password");
                 User user = (User) userService.loadUserByUsername(userDTO.getUsername());
-                if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS &&
-                    user.getLastFailedLogin().plusMinutes(LOCK_TIME_DURATION).isAfter(LocalDateTime.now())){
-                    model.addAttribute("error", "Account Locked");
-                    return null;
+                //if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS &&
+                    //user.getLastFailedLogin().plusMinutes(LOCK_TIME_DURATION).isAfter(LocalDateTime.now())){
+                    //model.addAttribute("error", "Account Locked");
+                    //return null;
 
-                } else {
-                    user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
-                    System.out.println("Attempt failed");
-                    System.out.println(user.getFailedLoginAttempts());
-                    user.setLastFailedLogin(LocalDateTime.now());
-                    if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS) {
-                        model.addAttribute("error", "Maximum failed attempts reached");
-                        return null;
-                    }
-                }
+                //} //else {
+                    //user.setFailedLoginAttempts(user.getFailedLoginAttempts()+1);
+                    //System.out.println("Attempt failed");
+                    //System.out.println(user.getFailedLoginAttempts());
+                    //user.setLastFailedLogin(LocalDateTime.now());
+                    //if (user.getFailedLoginAttempts() >= MAX_FAILED_ATTEMPTS) {
+                    //    model.addAttribute("error", "Maximum failed attempts reached");
+                    //    return null;
+                    //}
+                //}
             }
 
         }
-        return null;
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "Some other error"));
     }
 
     @PostMapping("/register")
