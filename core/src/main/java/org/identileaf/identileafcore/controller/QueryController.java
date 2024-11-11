@@ -111,10 +111,8 @@ public class QueryController {
                     "treedetail", chatModel.call(prompt)));
         } else {
             // Catch if page is reached without a proper query. Could also do a redirect but whatever
-            return ResponseEntity.ok(Map.of("error", "You've reached this page in error. " +
-                    "Please return to the tree query and make sure you have answered the questions properly",
-                    "treename", "",
-                    "treedetail", ""));
+            return ResponseEntity.badRequest().body(Map.of("error", "You've reached this page in error. " +
+                    "Please return to the tree query and make sure you have answered the questions properly"));
         }
     }
 
