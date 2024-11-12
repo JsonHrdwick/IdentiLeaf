@@ -2,8 +2,12 @@ package org.identileaf.identileafcore.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.Collections;
 
 
 @Setter
@@ -25,7 +29,11 @@ public class User {
 
     private String role;
 
-    private int failedLoginAttempts = 0;
-    private LocalDateTime lastFailedLogin;
+    private int failedLoginAttempts;
+    private boolean accountLocked;
+    private LocalDateTime lockTime;
 
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role));
+    }
 }

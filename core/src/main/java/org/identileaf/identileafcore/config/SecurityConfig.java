@@ -24,10 +24,12 @@ public class SecurityConfig {
     UserRepository loginRepo;
 
     private final UserService userService;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     // Constructor injection for MyUserDetailService
-    public SecurityConfig(UserService userService) {
+    public SecurityConfig(UserService userService, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.userService = userService;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
     }
 
     // Define BCryptPasswordEncoder as a Bean
@@ -50,7 +52,11 @@ public class SecurityConfig {
                         .usernameParameter("username")
                         .passwordParameter("password")
                         .permitAll()
+                        .failureHandler(customAuthenticationFailureHandler) // Register custom failure handler
+                        .and()
+                        .authenticationProvider(authenticationProvider())
                 )
+
                 .logout(logout -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login?logout=true")
