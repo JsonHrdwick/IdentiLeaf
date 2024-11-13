@@ -2,6 +2,8 @@ package org.identileaf.identileafcore.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.DialectOverride;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
