@@ -38,6 +38,16 @@ public class QueryController {
         treeList = Optional.ofNullable(treeService.getAllTrees());
     }
 
+    // @PostMapping("/login")
+    // The /login PostMapping is handled natively by Spring Security and therefore does not need to be defined here.
+    // The form parameters and definitions are defined in the SecurityConfig class.
+    // Error handler method is also defined in this class which handles the user account locked out use-case.
+
+    /**
+     * Handles the processing of moving forward through the question pool. Breaks the encoded questions/answer pairs into
+     * json objects to pass to frontend. There is currently no handling for reaching the end of the question pool.
+     * @return json response consisting of question:String question & answers:ArrayList<String> answers
+     */
     @GetMapping("/question")
     public ResponseEntity<Map<String, Object>> getQuestion() {
         Map<String, Object> response = new HashMap<>();
@@ -54,6 +64,16 @@ public class QueryController {
 
     }
 
+    /**
+     * Processes the answer returned from the /question arraylist of possible answers.
+     * A mismatching answer (such as from a manual user entry answer) will likely prompt an exception as this PostMapping
+     * does not support any case matching.
+     * @param answer A single string answer picked from the list of possible answers supplied by the /question GetMapping
+     * @return If the list of possible trees is greater than one, this PostMapping will return a status:continue json
+     * which should prompt the query to continue to the next question. If the possible trees is exactly equal to one then
+     * the method will return a redirect:/final-tree json. Should neither of these criteria be met, the question mapping will
+     * be completely restarted.
+     */
     @PostMapping("/answer")
     public ResponseEntity<?> getAnswer(@RequestBody String answer) {
 
@@ -81,7 +101,6 @@ public class QueryController {
             }
             if (treeList.get().size() == 1) {finalQuestion = true;}
             else if (treeList.get().isEmpty()) {restartQuery();}
-            System.out.println(treeList);
         } else if (finalQuestion) {
             if ("Yes".equals(answer)) {
                 return ResponseEntity.ok().body(Map.of("redirectUrl", "/final-tree"));
@@ -102,6 +121,14 @@ public class QueryController {
         finalQuestion = false;
     }
 
+    /**
+     * Handles the request for AI to supply additional details on a tree. The method first checks to see if the list
+     * of possible trees is exactly one as it will query the first tree in the list. This also ensures that the query has
+     * been successfully completed and the user has not navigated to this mapping out of order.
+     * @return If the treeList size is exactly one tree, returns an AI generated detail on the tree in the json form of
+     * treename: String tree-name & treeDetail: String tree-detail. Should this condition not be met, the method returns
+     * a json of error: String error-message
+     */
     @GetMapping("/treeDetail")
     public ResponseEntity<Map<String, String>> treeDetail() {
         if (treeList.get().size() == 1){

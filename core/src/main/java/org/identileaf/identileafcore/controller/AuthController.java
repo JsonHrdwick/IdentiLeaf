@@ -45,14 +45,12 @@ public class AuthController {
             model.addAttribute("error", "Invalid email address");
             return null;
         } else if (!authService.validateNewPassword(userDTO.getPassword())) {
-            model.addAttribute("error", "Invalid password");
+            model.addAttribute("error", "Password must be at least 8 characters long with at least 1 number and 1 special character");
             return null;
         } else if (authService.userExists(userDTO.getUsername())) {
             model.addAttribute("error", "User already exists");
             return null;
         } else {
-            System.out.println(userDTO.getPassword() + " " + passwordEncoder.encode(userDTO.getPassword()));
-
             authService.registerNewUser(userDTO);
             model.addAttribute("error", "Successfully registered!");
             return "/index";

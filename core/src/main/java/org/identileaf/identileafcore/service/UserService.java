@@ -18,31 +18,49 @@ public class UserService implements UserDetailsService {
     private static final int MAX_ATTEMPTS = 3;
     private final UserRepository userRepository;
 
-    // Constructor injection for MyUserRepository
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-    public User findByUsername(String username) {
+
+    // Simplifies code so user calls inside method do not have to be wrapped in Optional casting or handle exceptions
+    private User findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
+    /**
+     * Loads the requested user granted that the account is not locked out. Resets the status if the local time is greater
+     * than the lockout time. Method is used by DaoAuthenticationProvider in SecurityConfig
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user.isAccountLocked()) {
             // Check if the lock period has passed
             if (user.getLockTime().plusMinutes(LOCK_DURATION_MINUTES).isBefore(LocalDateTime.now())) {
-                user.setAccountLocked(false); // Unlock the account
-                user.setFailedLoginAttempts(0); // Reset attempts
+                user.setAccountLocked(false);
+                user.setFailedLoginAttempts(0);
                 userRepository.save(user);
             } else {
                 throw new LockedException("Account locked");
             }
+        } else { // User was logged in and is not locked out
+            user.setAccountLocked(false);
+            user.setFailedLoginAttempts(0);
+            userRepository.save(user);
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.getAuthorities());
     }
+
+    /**
+     * Handles the increment and recording of a failed login attempt. If max attempts are reached then method sets the
+     * user account status to locked. Max attempts = 3, Lockout time = 5 min
+     * @param username User's username
+     */
     public void processFailedLoginAttempt(String username) {
         User user = findByUsername(username);
         if (user != null) {
