@@ -6,21 +6,18 @@ import org.identileaf.identileafcore.service.TreeService;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.context.request.async.DeferredResult;
 
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
 
 @Controller
 public class QueryController {
 
     private final QueryService queryService;
-    private TreeService treeService;
+    private final TreeService treeService;
     private Optional<List<Tree>> treeList;
     private final OpenAiChatModel chatModel;
 

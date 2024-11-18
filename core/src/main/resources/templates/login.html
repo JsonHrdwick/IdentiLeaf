@@ -56,6 +56,18 @@
             background: #007bff;
             color: white;
         }
+        a {
+            margin-top: 10px;
+            display: inline-block;
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -76,35 +88,10 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Login</button>
+    <a href="/register">Go to Register</a>
 </form>
 <script>
-/*    function processButton(){
-        fetch('/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(errorData => {
-                        throw new Error(errorData.error || 'Something went wrong with the request');
-                    });
-                }
-                return response.json()
-            })
-            .then(data => {
-                // Populate question
-                if (data.redirectUrl){
-                    window.location.href = data.redirectUrl;
-                }
-            })
-            .catch(error => {
-                document.getElementById('error').innerText = error.message;
-                document.getElementById('error').style.color = "red";
-            })
-    }
-*/
+
 </script>
 </body>
 </html>
