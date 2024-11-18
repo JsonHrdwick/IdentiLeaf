@@ -20,8 +20,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    UserRepository loginRepo;
 
     private final UserService userService;
     private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;

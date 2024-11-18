@@ -44,7 +44,6 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
         } else {
             errorMessage = "Invalid username or password!";
         }
-        System.out.println(errorMessage);
         // Store the error message in the session for later use on the login page
         request.getSession().setAttribute("loginError", errorMessage);
 

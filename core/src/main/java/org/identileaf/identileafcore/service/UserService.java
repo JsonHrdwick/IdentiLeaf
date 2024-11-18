@@ -47,10 +47,6 @@ public class UserService implements UserDetailsService {
             } else {
                 throw new LockedException("Account locked");
             }
-        } else { // User was logged in and is not locked out
-            user.setAccountLocked(false);
-            user.setFailedLoginAttempts(0);
-            userRepository.save(user);
         }
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(), user.getPassword(), user.getAuthorities());
@@ -66,7 +62,6 @@ public class UserService implements UserDetailsService {
         if (user != null) {
             int newFailCount = user.getFailedLoginAttempts() + 1;
             user.setFailedLoginAttempts(newFailCount);
-            System.out.println("New failed login attempt: " + newFailCount);
 
             if (newFailCount >= MAX_ATTEMPTS) {
                 user.setAccountLocked(true);
