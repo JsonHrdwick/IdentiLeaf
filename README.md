@@ -34,9 +34,15 @@ MySQL using AWS for tree and user data storage
 
 ## 🌟 Acknowledgements
 
-Tree data sourced from SCFC
+Tree data sourced from South Carolina Foresty Commission
+
 AI integration powered by OpenAI
-Special thanks to all contributors!
+
+**Database Design and Material Research:**
+- Ian Rastogi
+
+**Frontend Design:**
+- Tehytan “TK” Retuyan
 
 ## Installation
 
