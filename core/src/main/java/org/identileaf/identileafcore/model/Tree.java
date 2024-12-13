@@ -18,7 +18,15 @@ public class Tree {
     private String scientificName;
     private String commonName;
 
-    private int PlantType_ID;
-    private int LeafType_ID;
-    private int BarkType_ID;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "plant_type_id")
+    private PlantType plantType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "leaf_type_id")
+    private LeafType leafType;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bark_type_id")
+    private BarkType barkType;
 }
