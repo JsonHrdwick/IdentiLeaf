@@ -48,6 +48,11 @@ public class QueryController {
     @GetMapping("/question")
     public ResponseEntity<Map<String, Object>> getQuestion() {
         Map<String, Object> response = new HashMap<>();
+        int questionNumber = queryService.getQuestionNumber();
+        System.out.println(questionNumber);
+        if (questionNumber == 11) {
+            restartQuery();
+        }
         if (!finalQuestion) {
             response.put("question", queryService.promptQuestion());
             response.put("answers", queryService.getAnswers());
@@ -104,7 +109,7 @@ public class QueryController {
             } else{
                 restartQuery();
             }
-        } else if (treeList.isEmpty()) {
+        } else if (treeList.get().isEmpty()) {
             restartQuery();
         }
         return ResponseEntity.ok(Map.of("status", "continue")); // Use a JSON object for consistent structure

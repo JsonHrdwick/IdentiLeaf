@@ -108,4 +108,6 @@ public class QueryService {
         return userInputAnswer;
     }
 
+    public int getQuestionNumber() { return questionNumber; }
+
 }
