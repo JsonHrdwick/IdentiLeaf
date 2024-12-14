@@ -48,9 +48,7 @@ public class QueryController {
     @GetMapping("/question")
     public ResponseEntity<Map<String, Object>> getQuestion() {
         Map<String, Object> response = new HashMap<>();
-        int questionNumber = queryService.getQuestionNumber();
-        System.out.println(questionNumber);
-        if (questionNumber == 11) {
+        if (queryService.checkQuestionsLeft()) {
             restartQuery();
         }
         if (!finalQuestion) {
@@ -112,14 +110,16 @@ public class QueryController {
         } else if (treeList.get().isEmpty()) {
             restartQuery();
         }
+        treeList.get().forEach(i -> System.out.println(i.toString()));
         return ResponseEntity.ok(Map.of("status", "continue")); // Use a JSON object for consistent structure
     }
+
     private void restartQuery() {
         treeList = Optional.ofNullable(treeService.getAllTrees());
         leafType = 0;
         plantType = 0;
         barkType = 0;
-        queryService.questionNumber=0;
+        queryService.reset();
         finalQuestion = false;
     }
 
