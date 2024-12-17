@@ -12,14 +12,14 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.stereotype.Service;
 
 @Service
-public class AuthService {
+public class RegisterService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final HttpServletRequest httpServletRequest;
 
     @Autowired
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, HttpServletRequest httpServletRequest) {
+    public RegisterService(UserRepository userRepository, PasswordEncoder passwordEncoder, HttpServletRequest httpServletRequest) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.httpServletRequest = httpServletRequest;
@@ -33,13 +33,17 @@ public class AuthService {
     public void registerNewUser(UserDTO userDTO) {
 
         User user = new User();
-        user.setUsername(userDTO.getUsername());
+        user.setUsername(userDTO.getEmail());
         user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole("USER");
         user.setAccountLocked(false);
 
         userRepository.save(user);
         autoLoginUser(user);
+    }
+
+    public void removeUser(User user) {
+        userRepository.delete(user);
     }
 
     /**
@@ -72,7 +76,7 @@ public class AuthService {
      * @return Boolean true/false whether the email is valid/not
      */
     public boolean validateNewEmail(String email){
-        String regex = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?";
+        String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
         return email.matches(regex);
     }
 

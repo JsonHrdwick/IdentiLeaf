@@ -86,4 +86,5 @@ public class SecurityConfig {
         authenticationManagerBuilder.userDetailsService(userService);
         return authenticationManagerBuilder.build();
     }
+
 }
