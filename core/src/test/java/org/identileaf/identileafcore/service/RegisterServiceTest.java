@@ -40,4 +40,19 @@ class RegisterServiceTest {
         assertFalse(registerService.validateNewEmail("@."));
 
     }
+    @Test
+    public void testPasswordRegex(){
+        String goodPassword = "G00dP@$$w0rd";
+        String badPassword_NotLongEnough = "P!23";
+        String badPassword_NoNumbers = "p@ssword";
+        String badPassword_NoLetters = "!2#4%6&8";
+        String badPassword_NoSpecialCharacters = "passw0rd";
+
+        assertTrue(registerService.validateNewPassword(goodPassword));
+        assertFalse(registerService.validateNewPassword(badPassword_NotLongEnough));
+        assertFalse(registerService.validateNewPassword(badPassword_NoNumbers));
+        assertFalse(registerService.validateNewPassword(badPassword_NoLetters));
+        assertFalse(registerService.validateNewPassword(badPassword_NoSpecialCharacters));
+        assertFalse(registerService.validateNewPassword(null));
+    }
 }
