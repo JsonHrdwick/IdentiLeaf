@@ -74,7 +74,7 @@
 
 <form id="registerForm" th:action="@{/register}" method="post" th:object="${userDTO}">
     <h2>Register</h2>
-    <input type="text" id="username" placeholder="Username" th:field="*{username}" required>
+    <input type="text" id="email" placeholder="email" th:field="*{email}" required>
     <input type="password" id="password" placeholder="Password" th:field="*{password}" required>
     <input type="password" id="confirmPassword" placeholder="Confirm Password" th:field="*{confirmPassword}" required>
     <button type="submit">Register</button>

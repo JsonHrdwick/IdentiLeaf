@@ -21,7 +21,11 @@ public class QueryService {
     private ArrayList<String> answers;
 
     QueryService() throws FileNotFoundException {
-        questionMap = generateQuestions();
+        questionMap = generateQuestions("core/src/main/resources/questions.csv");
+        questionNumber = 0;
+    }
+    QueryService(String path) throws FileNotFoundException {
+        questionMap = generateQuestions(path);
         questionNumber = 0;
     }
 
@@ -33,24 +37,27 @@ public class QueryService {
      * (ex. Question: AnswerString, QueryConcat, AnswerString, QueryConcat...)
      * @throws FileNotFoundException
      */
-    private HashMap<Integer, HashMap<String, ArrayList<String>>> generateQuestions() throws FileNotFoundException {
-        Scanner scanner = new Scanner(new File("core/src/main/resources/questions.csv"));
+    private HashMap<Integer, HashMap<String, ArrayList<String>>> generateQuestions(String filePath) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(filePath));
         HashMap<Integer, HashMap<String, ArrayList<String>>> questionMap = new HashMap<>();
         int questionId = 0;
         while (scanner.hasNext()) {
             // Takes line from csv and splits it into an array
             String line = scanner.nextLine();
             String[] tokens = line.split(",");
-            // Adds ID to Map
-            questionMap.put(questionId, new HashMap<>());
-            // Array for the answers
-            ArrayList<String> answers = new ArrayList<>(tokens.length - 1);
-            for (int i = 1; i < tokens.length; i++) {
-                answers.add(i - 1, tokens[i]);
+            // Length of 3 or more denotes a question with atleast 1 answer and query statement
+            // All other lines are trashed
+            if (tokens.length >= 3 ) {
+                questionMap.put(questionId, new HashMap<>());
+                // Array for the answers
+                ArrayList<String> answers = new ArrayList<>(tokens.length - 1);
+                for (int i = 1; i < tokens.length; i++) {
+                    answers.add(i - 1, tokens[i]);
+                }
+                // Adds Question, Answers to the ID Map
+                questionMap.get(questionId).put(tokens[0], answers);
+                questionId++;
             }
-            // Adds Question, Answers to the ID Map
-            questionMap.get(questionId).put(tokens[0], answers);
-            questionId++;
         }
         scanner.close();
         return questionMap;
@@ -76,7 +83,7 @@ public class QueryService {
         answers = questionMap.get(questionNumber).get(question);
         ArrayList<String> answersOnly = new ArrayList<>();
         for (int i = 0; i < answers.size(); i++) {
-            if (!answers.get(i).contains("=")) {
+            if (i%2 == 0) {
                 answersOnly.add(answers.get(i));
             }
         }
@@ -96,6 +103,9 @@ public class QueryService {
         questionNumber++;
         return answers.get(SQLIndex);
     }
+    public void resolveAnswer() {
+        questionNumber++;
+    }
 
     public Boolean checkQuestionsLeft(){
         if (questionNumber >= questionMap.size()) {
@@ -105,21 +115,5 @@ public class QueryService {
     }
     public void reset(){
         questionNumber = 0;
-    }
-
-    /**
-     * Deprecated method for parsing answers via terminal line input
-     *
-     * @param question
-     * @param answers
-     * @return
-     */
-    public static String userAnswer(String question, String answers) {
-        System.out.println(question);
-        System.out.println(answers);
-        Scanner scanner = new Scanner(System.in);
-        String userInputAnswer = "";
-        userInputAnswer = scanner.nextLine();
-        return userInputAnswer;
     }
 }

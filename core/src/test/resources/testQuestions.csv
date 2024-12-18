@@ -1,0 +1,5 @@
+Is PlantType 1?,Yes,PlantType_ID=1,No,PlantType_ID=2
+Is the LeafType 1 or 2 or 3?,1,LeafType_ID=1,2,LeafType_ID=2,3,LeafType_ID=3
+It could be Tree 3 or 4 or it could be Tree 5 or 6?,The first set,Tree.ID=3/Tree.ID=4,The second set,Tree.ID=5/Tree.ID=6
+No SQL?,Yes,,No,,,
+What happens when we have no answers?,,,,,,
