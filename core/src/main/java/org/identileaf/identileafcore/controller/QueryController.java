@@ -81,7 +81,7 @@ public class QueryController {
             String sql = queryService.resolveAnswer(answer);
 
             // Only format of Tree.ID= should have / to delimit multiple possible ids
-            if (sql.contains("/")) {
+            if (sql.contains("/") || sql.contains("Tree.ID=")) {
                 List<String> stringIDList = List.of(sql.split("/"));
                 List<Integer> idList = new ArrayList<>();
                 stringIDList.forEach(i -> idList.add(Integer.parseInt(i.replace("Tree.ID=", ""))));
