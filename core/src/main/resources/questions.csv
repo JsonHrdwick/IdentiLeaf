@@ -3,7 +3,7 @@ Is the leaf scale needle or broad?,scale,LeafType_ID=1,needle,LeafType_ID=2,broa
 Does the leaf edge have teeth or is the edge smooth?,teeth edge,Tree.ID=3/Tree.ID=4,smooth edge,Tree.ID=5/Tree.ID=6
 Does the plant have paired samaras and red petiole?,yes,Tree.ID=3,no,1=1
 Is the leaf star-shaped with a spined and round capsule?,yes,Tree.ID=4,no,1=1
-Is the leaf deeply lobed with irregularly plated bark?,yes,ID=5,no,1=1
+Is the leaf deeply lobed with irregularly plated bark?,yes,Tree.ID=5,no,1=1
 Is the leaf kite-shaped and shallowly lobed?,yes,Tree.ID=6,no,1=1
 Does the plant have a simple or compound leaf?,simple,Tree.ID=7/Tree.ID=8/Tree.ID=10,compound,Tree.ID=9
 Is the leaf oval shaped and rough on both sides?,yes,Tree.ID=7,no,1=1

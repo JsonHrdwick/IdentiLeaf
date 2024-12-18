@@ -35,7 +35,7 @@ class QueryServiceTest {
 
         QueryService queryService = new QueryService("../core/src/test/resources/testQuestions.csv");
 
-        int questionNumber=-1;
+        int questionNumber = -1;
         while (!queryService.checkQuestionsLeft()) {
             questionNumber++;
             String question = queryService.promptQuestion();
@@ -43,7 +43,7 @@ class QueryServiceTest {
 
             List<String> answers = queryService.getAnswers();
             List<String> expectedAnswers = new ArrayList<>();
-            switch(questionNumber){
+            switch (questionNumber) {
                 case 0:
                 case 3:
                     expectedAnswers.add("Yes");
@@ -76,7 +76,94 @@ class QueryServiceTest {
             }
         }
 
-
-
     }
 }
+
+/*
+// I was going to implement a pathing test here, but I realized that that would require loading all the resources in an
+// integration test so this will probably be moved later, for now it lives here to make it easy to recall
+
+    ArrayList<String> easternRedCedar = new ArrayList<>();
+    easternRedCedar.add("yes");
+    easternRedCedar.add("scale"); // final question
+
+    ArrayList<String> loblollyPine = new ArrayList<>();
+    loblollyPine.add("yes");
+    loblollyPine.add("needle"); // final question
+
+    ArrayList<String> whiteOak = new ArrayList<>();
+    whiteOak.add("yes");
+    whiteOak.add("broad");
+    whiteOak.add("smooth edge");
+    whiteOak.add("no");
+    whiteOak.add("no");
+    whiteOak.add("yes"); // final question
+
+    ArrayList<String> blackjackOak = new ArrayList<>();
+    blackjackOak.add("yes");
+    blackjackOak.add("broad");
+    blackjackOak.add("smooth edge");
+    blackjackOak.add("no");
+    blackjackOak.add("no");
+    blackjackOak.add("no");
+    blackjackOak.add("yes"); // final question
+
+    ArrayList<String> pignutHickory = new ArrayList<>();
+    pignutHickory.add("yes");
+    pignutHickory.add("broad");
+    pignutHickory.add("smooth edge");
+    pignutHickory.add("no");
+    pignutHickory.add("no");
+    pignutHickory.add("no");
+    pignutHickory.add("no");
+    pignutHickory.add("compound"); // final question
+
+    ArrayList<String> redMaple = new ArrayList<>();
+    redMaple.add("yes");
+    redMaple.add("broad");
+    redMaple.add("teeth edge");
+    redMaple.add("yes"); // final question
+
+    ArrayList<String> sweetGum = new ArrayList<>();
+    sweetGum.add("yes");
+    sweetGum.add("broad");
+    sweetGum.add("teeth edge");
+    sweetGum.add("no");
+    sweetGum.add("yes"); // final question
+
+    ArrayList<String> blackGum = new ArrayList<>();
+    blackGum.add("yes");
+    blackGum.add("broad");
+    blackGum.add("smooth edge");
+    blackGum.add("no");
+    blackGum.add("no");
+    blackGum.add("no");
+    blackGum.add("no");
+    blackGum.add("simple");
+    blackGum.add("no");
+    blackGum.add("no");
+    blackGum.add("yes"); // final question
+
+    ArrayList<String> americanElm = new ArrayList<>();
+    americanElm.add("yes");
+    americanElm.add("broad");
+    americanElm.add("smooth edge");
+    americanElm.add("no");
+    americanElm.add("no");
+    americanElm.add("no");
+    americanElm.add("no");
+    americanElm.add("simple");
+    americanElm.add("yes"); // final question
+
+    ArrayList<String> hawthorn = new ArrayList<>();
+    hawthorn.add("yes");
+    hawthorn.add("broad");
+    hawthorn.add("smooth edge");
+    hawthorn.add("no");
+    hawthorn.add("no");
+    hawthorn.add("no");
+    hawthorn.add("no");
+    hawthorn.add("simple");
+    hawthorn.add("no");
+    hawthorn.add("yes"); // final question
+*/
